@@ -1,6 +1,6 @@
 ** Bugs Encontrados **
 
-1� Quando se est� o Slack-desc do arquivo, caso tenha escrito algum asterisco(*), o script o troca 
+1º Quando se está o Slack-desc do arquivo, caso tenha escrito algum asterisco(*), o script o troca 
 pela palavra "slack-desc", por exemplo:
 
 Digitado no programa para ser Slack-desc:
@@ -18,4 +18,4 @@ slack-desc teste slack-desc
 
 
 
-**********N�o h� mais bugs encontrados*********************************
+**********Não há mais bugs encontrados*********************************
