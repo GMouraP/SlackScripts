@@ -1,0 +1,155 @@
+#!/bin/bash
+# SlackMaker - A Package creating tool for Slackware Linux
+# Copyright (C) 2014  Gustavo M. Pereira
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see http://www.gnu.org/licenses/gpl.txt.
+#
+#
+# Gustavo M. Pereira (aka MrOverCrash) <mrovercrash@gmail.com>
+#
+#=============================================================================
+#
+
+! [ -e /etc/slackmaker/slackmaker.conf ] && echo "Config file not found! Reinstall this software..." && exit
+########Conf file##########################
+source /etc/slackmaker/slackmaker.conf
+###########################################
+
+##Checking Parameters######
+if [ "$1" = "--help" ]
+then
+echo -e -n "\nUsage: "
+echo -e "slackmaker [PACKAGE NAME] [VERSION] [ARCH] [BUILD NUMBER] [EXTENSION]"
+echo -e -n "\nExample: "
+echo -e "slackmaker SlackPkgMaker 1.0 NoArch 1 txz\n"
+exit
+fi
+
+if [ $# -lt 5 ]
+then
+echo -e "\nYou missed one or more arguments!"
+echo -e "Type: 'slackmaker --help' if you have any usage doubts!\n"
+exit
+fi
+
+####Cleaning the working table######
+if ! [ -e $WORK ]
+then
+mkdir $WORK
+
+else
+rm -rf $WORK/*
+fi
+
+if ! [ -e $TMPDIR ]
+then
+mkdir $TMPDIR
+
+else
+rm -rf $TMPDIR/*
+fi
+
+if ! [ -e $RESULTDIR ]
+then
+mkdir $RESULTDIR
+fi
+#################################
+
+echo "Type the name of the tarball (if it's an other directory, type the path to it): "
+read TARBALL
+
+tar xfzv $TARBALL -C $WORK/
+
+cd $WORK/*/
+
+if ! [ -e configure ] && ! [ -e Makefile ]
+then
+echo -e "I couldn't find the 'configure' or the 'Makefile' file! Be sure that you don't have to create the any of them by yourself, if you need, open a second shell and do it!\n"
+exit
+fi
+
+if ! [ -e configure ] && [ -e Makefile ]
+then
+echo "I couldn't find the 'configure' file, but I found the 'Makefile'."
+echo "Starting Compilation..."
+sleep 3
+
+else
+echo "Now type here any especial argument that you need or want to be used in compilation: "
+ read ESPECIAL
+
+./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var $ESPECIAL
+fi
+
+if [ $NCORES = 0 ]
+then
+make
+else
+make -j$NCORES
+fi
+
+make install DESTDIR=$TMPDIR/
+
+strip -s $TMPDIR/usr/lib/*  $TMPDIR/usr/bin/*
+
+gzip -9 $TMPDIR/usr/share/man/man?/*.? || gzip -9 $TMPDIR/usr/man/man?/*.?
+
+mkdir $TMPDIR/install && cd $TMPDIR/install
+
+echo "Now you're going to create your slack-desc. A slack-desc is a short description of the software that will be displayed when you try to install it with the package!"
+
+#Slack-Desc Generator
+[ -e slack-desc ] && rm -f slack-desc
+
+for ((j = 0; j != ${#1}; j++ ))
+do
+echo -n " " >> slack-desc
+done
+
+echo "|-----handy-ruler------------------------------------------------------|" >> slack-desc
+echo -e "Now, write your description! If you're done, type ';;'\n"
+echo -e "Remember: There's a limit of 69 characters per line!\n"
+
+DESCRIPTION="SlackPackageMaker"
+for((i = 0; i != 11; i++ ))
+do
+
+ if [ "$DESCRIPTION" = ";;" ]
+ then
+  echo $1:  >> slack-desc
+ else
+  read DESCRIPTION
+
+   while [ ${#DESCRIPTION} -ge 69 ]; do
+   echo -e "\nThe limit of 69 characters was reached! Try again: \n"
+   read DESCRIPTION
+   done
+
+  [ "$DESCRIPTION" = ";;" ] && echo $1:  >> slack-desc && continue
+  echo $1: $DESCRIPTION >> slack-desc
+ fi
+done
+#End of Slack-Desc generator
+
+cd $TMPDIR/
+
+echo -e "\nMaybe you'll have to type the sudo password! Be prepared."
+sleep 1
+sudo makepkg -l y -c n "$RESULTDIR/$1-$2-$3-$4.$5"
+
+echo -e "\n \nYour Package was made with sucess!"
+echo -n "It's located here: "
+echo $RESULTDIR
+echo "Now you can go there and do whatever you want with it! :D"
+exit
