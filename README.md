@@ -1,2 +1,13 @@
 SlackScripts
 ============
+
+Todos os scripts para Slackware de minha autoria estão neste repositório, em suas respectivas pastas!
+Em suas pastas estão o pacote já feito, e os arquivos originais de código.
+
+Todos os Scripts estão sob a licença GPL v3, vide arquivo LICENSE.
+
+Caso tenha encontrado algum bug em algum deles, favor me contatar pelo e-mail: mrovercrash@gmail.com
+
+OBS. Todos os scripts estão em inglês.
+
+--Gustavo M. Pereira (aka OverCrash)
