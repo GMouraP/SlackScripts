@@ -1,7 +1,7 @@
 SlackScripts
 ============
 
-Todos os scripts para Slackware de minha autoria estão neste repositório, em suas respectivas pastas!
+Todos os scripts para Slackware Linux, de minha autoria, estão neste repositório e em suas respectivas pastas!
 Em suas pastas estão o pacote já feito, e os arquivos originais de código.
 
 Todos os Scripts estão sob a licença GPL v3, vide arquivo LICENSE.
