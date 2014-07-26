@@ -1,5 +1,5 @@
 ** Bugs Encontrados **
-
+--------------------------------------------------------------------------------------------------------------------
 1º Quando se está o Slack-desc do arquivo, caso tenha escrito algum asterisco(*), o script o troca 
 pela palavra "slack-desc", por exemplo:
 
@@ -12,10 +12,9 @@ Resultado final:
 slack-desc teste slackdesc
 
 
+STATUS: Consertado!
 
 
+**********Não há mais bugs encontrados*******************************************************************************
 
-
-
-
-**********Não há mais bugs encontrados*********************************
+--Gustavo M. Pereira (aka OverCrash)
