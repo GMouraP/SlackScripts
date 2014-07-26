@@ -1,6 +1,11 @@
 ** Bugs Encontrados **
+<<<<<<< HEAD
 --------------------------------------------------------------------------------------------------------------------
 1º Quando se está o Slack-desc do arquivo, caso tenha escrito algum asterisco(*), o script o troca 
+=======
+
+1Âº Quando se estÃ¡ o Slack-desc do arquivo, caso tenha escrito algum asterisco(*), o script o troca 
+>>>>>>> 1ca7ca0deeb395e80bf1a9974866332466262e3b
 pela palavra "slack-desc", por exemplo:
 
 Digitado no programa para ser Slack-desc:
@@ -9,7 +14,7 @@ Digitado no programa para ser Slack-desc:
 
 Resultado final:
 
-slack-desc teste slackdesc
+slack-desc teste slack-desc
 
 
 STATUS: Consertado!
@@ -17,4 +22,11 @@ STATUS: Consertado!
 
 **********Não há mais bugs encontrados*******************************************************************************
 
+<<<<<<< HEAD
 --Gustavo M. Pereira (aka OverCrash)
+=======
+
+
+
+**********NÃ£o hÃ¡ mais bugs encontrados*********************************
+>>>>>>> 1ca7ca0deeb395e80bf1a9974866332466262e3b
