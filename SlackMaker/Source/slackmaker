@@ -20,14 +20,14 @@
 #
 #=============================================================================
 #
-
+#
 ! [ -e /etc/slackmaker/slackmaker.conf ] && echo "Config file not found! Reinstall this software..." && exit
 ########Conf file##########################
 source /etc/slackmaker/slackmaker.conf
 ###########################################
-
+#
 ##Checking Parameters######
-if [ "$1" = "--help" ]
+if [  "$*" =  "--help" ]
 then
 echo -e -n "\nUsage: "
 echo -e "slackmaker [PACKAGE NAME] [VERSION] [ARCH] [BUILD NUMBER] [EXTENSION]"
@@ -92,18 +92,15 @@ echo "Now type here any especial argument that you need or want to be used in co
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var $ESPECIAL
 fi
 
-if [ $NCORES = 0 ]
-then
-make
-else
-make -j$NCORES
-fi
+[ $NCORES = 0 ] && make || make -j$NCORES
 
 make install DESTDIR=$TMPDIR/
 
 strip -s $TMPDIR/usr/lib/*  $TMPDIR/usr/bin/*
+strip -s $TMPDIR/usr/lib64/*  $TMPDIR/usr/sbin/*
 
-gzip -9 $TMPDIR/usr/share/man/man?/*.? || gzip -9 $TMPDIR/usr/man/man?/*.?
+gzip -9 $TMPDIR/usr/share/man/man?/*.?
+gzip -9 $TMPDIR/usr/man/man?/*.?
 
 mkdir $TMPDIR/install && cd $TMPDIR/install
 
@@ -137,7 +134,7 @@ do
    done
 
   [ "$DESCRIPTION" = ";;" ] && echo $1:  >> slack-desc && continue
-  echo $1: $DESCRIPTION >> slack-desc
+  echo $1: "$DESCRIPTION" >> slack-desc
  fi
 done
 #End of Slack-Desc generator
